@@ -12,7 +12,7 @@ const memberSchema = new Schema({
         type: String,
         required: true,
     },
-    user_pic:{
+    profilePic:{
         data:Buffer,
         contentType:String
     },
@@ -25,14 +25,14 @@ const memberSchema = new Schema({
         type: String,
         required: true
     },
-    phone_number:String,
+    phoneNumber:String,
     address:{
-        house_no:String,
+        houseNo:String,
         district:String,
-        sub_district:String,
+        subDistrict:String,
         province:String,
         country:String,
-        zip_code:String
+        zipCode:String
     },
     birthDay:{
         type:Date,
@@ -49,7 +49,7 @@ const memberSchema = new Schema({
         department:String,
         gpa:String
     }],
-    job_regis:[{
+    jobRegis:[{
         job_post_id:String,
         post_title:String,
         company_id:String,

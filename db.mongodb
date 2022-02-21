@@ -1,4 +1,4 @@
 use("test-nvc-job-market");
 
-db.members.findOneAndDelete({"email":"wer"});
+db.members.dropIndexes();
 db.members.find();
