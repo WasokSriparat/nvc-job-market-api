@@ -26,6 +26,7 @@ const memberSchema = new Schema({
         required: true
     },
     phoneNumber:String,
+    description:String,
     address:{
         houseNo:String,
         district:String,
@@ -43,15 +44,15 @@ const memberSchema = new Schema({
         type:String,
         required: true
     },
-    education:[{
+    educations:[{
         academy:String,
         qualification:String,
         department:String,
         gpa:String
     }],
-    jobRegis:[{
-        job_post_id:String,
-        post_title:String,
+    jobRegises:[{
+        jobPost_id:String,
+        title:String,
         company_id:String,
         company_name:String,
         department:String,

@@ -58,6 +58,42 @@ exports.updatePhoneNumber = async (req, res) => {
         
 };
 
+exports.addDescription = async (req, res) => {
+    let descriptionData = {
+        description:req.body.description
+    };
+    Member.findByIdAndUpdate(req.params.id, descriptionData)
+        .exec((err, result) => {
+            Member.findById(req.params.id)
+                .exec((err, result) => {
+                    // return doc ที่แก้ไขแล้วกลับไป
+                    res.status(200).json({
+                        msg: "OK",
+                        data: result
+                    });
+                });
+        });
+};
+exports.updateDescription = async (req, res) => {
+    let query = {_id: req.params.id};
+    let descriptionData = {
+        $set: {
+            description:req.body.description
+        }
+    }
+    Member.updateOne(query,descriptionData).exec((err, result) => {
+        Member.findById(req.params.id)
+            .exec((err, result) => {
+                // return doc ที่แก้ไขแล้วกลับไป
+                res.status(200).json({
+                    msg: "OK",
+                    data: result
+                });
+            });
+    });
+        
+};
+
 exports.addAddress = async (req, res) => {
     let addressData = {
         address:

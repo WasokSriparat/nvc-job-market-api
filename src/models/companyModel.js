@@ -8,7 +8,7 @@ const companySchema = new Schema({
         type: String,
         required: true,
     },
-    company_pic:{
+    profilePic:{
         data:Buffer,
         contentType:String
     },
@@ -21,20 +21,21 @@ const companySchema = new Schema({
         type: String,
         required: true
     },
-    phone_number: {
+    phoneNumber: {
         house: String,
         tel: String
     },
+    description:String,
     address:{
-        house_no:String,
+        houseNo:String,
         district:String,
-        sub_district:String,
+        subDistrict:String,
         province:String,
         country:String,
-        zip_code:String
+        zipCode:String
     },
-    job_posting:[{
-        job_post_id:String,
+    jobPostings:[{
+        jobPost_id:String,
         title:String,
         department:String,
         description:String,

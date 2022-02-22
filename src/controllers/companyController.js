@@ -1,5 +1,147 @@
 const Company = require("../models/companyModel");
 
+exports.getCompanies = async (req,res) => {
+    
+    Company.find().exec((err,result) => {
+        res.status(200).json({
+            msg: "ok",
+            data: result
+        })
+    });
+
+};
+
+exports.getCompanyById = async (req,res) => {
+    
+    Company.findById(req.params.id).exec((err,result) => {
+        res.status(200).json({
+            msg: "ok",
+            data: result
+        })
+    });
+
+};
+
+exports.addPhoneNumber = async (req, res) => {
+    let phoneData = {
+        phoneNumber:req.body.phoneNumber
+    };
+    Company.findByIdAndUpdate(req.params.id, phoneData)
+        .exec((err, result) => {
+            Company.findById(req.params.id)
+                .exec((err, result) => {
+                    // return doc ที่แก้ไขแล้วกลับไป
+                    res.status(200).json({
+                        msg: "OK",
+                        data: result
+                    });
+                });
+        });
+};
+exports.updatePhoneNumber = async (req, res) => {
+    let query = {_id: req.params.id};
+    let phoneData = {
+        $set: {
+            phoneNumber:req.body.phoneNumber
+        }
+    }
+    Company.updateOne(query,phoneData).exec((err, result) => {
+        Company.findById(req.params.id)
+            .exec((err, result) => {
+                // return doc ที่แก้ไขแล้วกลับไป
+                res.status(200).json({
+                    msg: "OK",
+                    data: result
+                });
+            });
+    });
+        
+};
+
+exports.addDescription = async (req, res) => {
+    let descriptionData = {
+        description:req.body.description
+    };
+    Company.findByIdAndUpdate(req.params.id, descriptionData)
+        .exec((err, result) => {
+            Company.findById(req.params.id)
+                .exec((err, result) => {
+                    // return doc ที่แก้ไขแล้วกลับไป
+                    res.status(200).json({
+                        msg: "OK",
+                        data: result
+                    });
+                });
+        });
+};
+exports.updateDescription = async (req, res) => {
+    let query = {_id: req.params.id};
+    let descriptionData = {
+        $set: {
+            description:req.body.description
+        }
+    }
+    Company.updateOne(query,descriptionData).exec((err, result) => {
+        Company.findById(req.params.id)
+            .exec((err, result) => {
+                // return doc ที่แก้ไขแล้วกลับไป
+                res.status(200).json({
+                    msg: "OK",
+                    data: result
+                });
+            });
+    });
+        
+};
+
+exports.addAddress = async (req, res) => {
+    let addressData = {
+        address:
+            {
+                houseNo:req.body.houseNo,
+                district:req.body.district,
+                subDistrict:req.body.subDistrict,
+                province:req.body.province,
+                country:req.body.country,
+                zipCode:req.body.zipCode
+            }
+    };
+    Company.findByIdAndUpdate(req.params.id, addressData)
+        .exec((err, result) => {
+            Company.findById(req.params.id)
+                .exec((err, result) => {
+                    // return doc ที่แก้ไขแล้วกลับไป
+                    res.status(200).json({
+                        msg: "OK",
+                        data: result
+                    });
+                });
+        });
+};
+exports.updateAddress = async (req, res) => {
+    let query = {_id: req.params.id};
+    let addressData = {
+        $set: {
+            "address.houseNo":req.body.houseNo,
+            "address.district":req.body.district,
+            "address.subDistrict":req.body.subDistrict,
+            "address.province":req.body.province,
+            "address.country":req.body.country,
+            "address.zipCode":req.body.zipCode,
+        }
+    }
+    Company.updateOne(query,addressData).exec((err, result) => {
+        Company.findById(req.params.id)
+            .exec((err, result) => {
+                // return doc ที่แก้ไขแล้วกลับไป
+                res.status(200).json({
+                    msg: "OK",
+                    data: result
+                });
+            });
+    });
+        
+};
 
 exports.register = async (req, res) => {
     try {
