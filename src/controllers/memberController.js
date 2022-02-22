@@ -146,7 +146,7 @@ exports.updateAddress = async (req, res) => {
 exports.addEducation = async (req, res) => {
     let educationData = {
         $push: {
-            education:
+            educations:
             {
                 academy:req.body.academy,
                 qualification:req.body.qualification,
@@ -169,13 +169,13 @@ exports.addEducation = async (req, res) => {
 };
 
 exports.updateEducation = async (req, res) => {
-    let query = {_id: req.params.id, "education._id":req.body._id };
+    let query = {_id: req.params.id, "educations._id":req.body._id };
     let educationData = {
         $set: {
-            "education.$.academy":req.body.academy,
-            "education.$.qualification":req.body.qualification,
-            "education.$.department":req.body.department,
-            "education.$.gpa":req.body.gpa
+            "educations.$.academy":req.body.academy,
+            "educations.$.qualification":req.body.qualification,
+            "educations.$.department":req.body.department,
+            "educations.$.gpa":req.body.gpa
         }
     }
     Member.updateOne(query,educationData).exec((err, result) => {
@@ -197,7 +197,7 @@ exports.deleteEducation = async (req, res) => {
             _id: req.params.id
         },{
             $pull: {
-                education: { _id : req.body._id }
+                educations: { _id : req.body._id }
             }
         }
     ).exec((err, result) => {

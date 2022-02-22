@@ -2,19 +2,27 @@ const express = require('express');
 const app = express.Router();
 const companyController = require('../controllers/companyController')
 
-// app.get("/", memberController);
-
-// app.get("/:id",memberController);
+// Get Data Company
+app.get("/", companyController.getCompanies);
+app.get("/:id",companyController.getCompanyById);
 
 // app.get("/name/:name",memberController.getProductByName);
 
 app.post("/register", companyController.register);
 app.post("/login", companyController.login);
 
-// app.put("/:id", memberController.editWholeProduct);
+// phone number
+app.patch("/phone/add/:id",companyController.addPhoneNumber);
+app.patch("/phone/update/:id", companyController.updatePhoneNumber);
 
-// app.patch("/:id",memberController.editProduct);
+// Description
+app.patch("/description/add/:id",companyController.addDescription);
+app.patch("/description/update/:id",companyController.updateDescription);
 
-// app.delete("/:id", memberController.deleteProduct);
+// Address
+app.patch("/address/add/:id",companyController.addAddress);
+app.patch("/address/update/:id", companyController.updateAddress);
+
+app.delete("/:id", companyController.deleteCompany);
 
 module.exports = app;

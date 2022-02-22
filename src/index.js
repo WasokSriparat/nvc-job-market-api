@@ -6,6 +6,7 @@ const port = process.env.PORT || 4002;
 
 const memberRoute = require("./routes/memberRoute");
 const companyRoute = require("./routes/companyRoute");
+const jobPostRoute = require("./routes/jobPostRoute.js");
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,7 @@ require("./db")(app);
 
 app.use("/member",memberRoute);
 app.use("/company",companyRoute);
+app.use("/jobpost",jobPostRoute);
 
 app.get("/",(req, res)=>{
     res.send("Hello from index");

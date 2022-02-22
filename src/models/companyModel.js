@@ -37,8 +37,9 @@ const companySchema = new Schema({
     jobPostings:[{
         jobPost_id:String,
         title:String,
-        department:String,
         description:String,
+        department:[String],
+        position:[String],
         postDate:Date
     }],
     category:{

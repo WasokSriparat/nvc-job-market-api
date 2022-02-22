@@ -54,12 +54,12 @@ const memberSchema = new Schema({
         jobPost_id:String,
         title:String,
         company_id:String,
-        company_name:String,
+        companyName:String,
         department:String,
-        description:String,
+        description:[String],
+        position:[String],
         regisStatus:String,
-        comment:String,
-        regis_date:Date
+        regisDate:Date
     }],
     category:{
         type:String,

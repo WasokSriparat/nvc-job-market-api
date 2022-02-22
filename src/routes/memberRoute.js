@@ -11,9 +11,13 @@ app.get("/:id",memberController.getMemberById);
 app.post("/register", memberController.register);
 app.post("/login", memberController.login);
 
-// phone_number
+// phone number
 app.patch("/phone/add/:id",memberController.addPhoneNumber);
 app.patch("/phone/update/:id", memberController.updatePhoneNumber);
+
+// Description
+app.patch("/description/add/:id",memberController.addDescription);
+app.patch("/description/update/:id",memberController.updateDescription);
 
 // Address
 app.patch("/address/add/:id",memberController.addAddress);

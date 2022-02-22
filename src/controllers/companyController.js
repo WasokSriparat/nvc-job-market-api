@@ -147,7 +147,7 @@ exports.register = async (req, res) => {
     try {
 
         let company = new Company({
-            name: req.body.companyName,
+            name: req.body.name,
             email: req.body.email,
         })
         company.password = await company.hashPassword(req.body.password);
@@ -217,4 +217,19 @@ exports.login = async (req, res) => {
             msg: err
         })
     }
+};
+
+exports.deleteCompany = async (req, res) => {
+    Company.findByIdAndDelete(req.params.id) 
+        .exec((err)=>{
+            if(err){
+                res.status(500).json({
+                    msg: err
+                });
+            } else{
+                res.status(200).json({
+                    msg: "Delete complete"
+                });
+            }
+        });
 };
