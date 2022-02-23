@@ -12,9 +12,9 @@ const memberSchema = new Schema({
         type: String,
         required: true,
     },
-    profilePic:{
-        data:Buffer,
-        contentType:String
+    profilePic: {
+        data: Buffer,
+        contentType: String
     },
     email: {
         type: String,
@@ -25,45 +25,51 @@ const memberSchema = new Schema({
         type: String,
         required: true
     },
-    phoneNumber:String,
-    description:String,
-    address:{
-        houseNo:String,
-        district:String,
-        subDistrict:String,
-        province:String,
-        country:String,
-        zipCode:String
+    phoneNumber: String,
+    description: String,
+    address: {
+        houseNo: String,
+        district: String,
+        subDistrict: String,
+        province: String,
+        country: String,
+        zipCode: String
     },
-    birthDay:{
-        type:Date,
+    birthDay: {
+        type: Date,
         default: Date.now(),
         required: true
     },
-    gender:{
-        type:String,
+    gender: {
+        type: String,
         required: true
     },
-    educations:[{
-        academy:String,
-        qualification:String,
-        department:String,
-        gpa:String
+    educations: [{
+        academy: String,
+        qualification: String,
+        department: String,
+        gpa: String
     }],
-    jobRegises:[{
-        jobPost_id:String,
-        title:String,
-        company_id:String,
-        companyName:String,
-        department:String,
-        description:[String],
-        position:[String],
-        regisStatus:String,
-        regisDate:Date
+    jobRegises: [{
+        jobPost_id: String,
+        title: String,
+        company_id: String,
+        companyName: String,
+        department: [String],
+        position: [String],
+        description: String,
+        regisStatus: {
+            type:String,
+            default:"Not View"
+        },
+        regisDate: {
+            type:Date,
+            default:Date.now()
+        }
     }],
-    category:{
-        type:String,
-        default:"member"
+    category: {
+        type: String,
+        default: "member"
     }
 }, {
     timestamps: true,

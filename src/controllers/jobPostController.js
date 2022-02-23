@@ -1,5 +1,6 @@
 const JobPost = require("../models/jobPostModel");
 const Company = require("../models/companyModel");
+const Member = require("../models/memberModel");
 
 exports.getJobPosts = async (req, res) => {
 
@@ -165,6 +166,83 @@ exports.updateJobPost = async (req, res) => {
                 });
         });
 };
+
+exports.addApplicant = async (req,res) => {
+    let applicantData = {
+        $push:{
+            applicants:{
+                member_id: req.body.member_id,
+                memberName: req.body.memberName,
+                position: req.body.position,
+                description: req.body.description,
+                resume: req.body.resume
+            }
+        }
+    }
+    JobPost.findByIdAndUpdate(req.params.id,applicantData)
+        .exec((err,result)=>{
+            JobPost.findById(req.params.id)
+            .exec((err,jobPostResult)=>{
+                let postRegisData = {
+                    $push:{
+                        jobRegises:{
+                            jobPost_id: req.params.id,
+                            title: jobPostResult.title,
+                            company_id: jobPostResult.company_id,
+                            companyName: jobPostResult.companyName,
+                            department: jobPostResult.department,
+                            position: jobPostResult.position,
+                            description: jobPostResult.description
+                        }
+                    }
+                }
+                Member.findByIdAndUpdate(req.body.member_id,postRegisData)
+                    .exec((err,result)=>{
+                        Member.findById(req.body.member_id)
+                        .exec((err,result)=>{
+                            res.status(200).json({
+                                msg: "OK",
+                                postData: jobPostResult,
+                                data: result,
+                            });
+                        })
+                    })
+            })
+        })
+
+}
+
+exports.updateRegisStatus = async (req,res) =>{
+    JobPost.updateOne(
+        {
+            _id:req.params.id,
+            "applicants._id":req.body.applicant_id
+        },
+        {
+            $set:{"applicants.$.regisStatus":req.body.status}
+        }
+    ).exec((err,result)=>{
+        JobPost.findById(req.params.id).exec((err,postResult)=>{
+            Member.updateOne(
+                {
+                    _id:"req.body.member_id",
+                    "jobRegises.jobPost_id":req.params.id
+                },
+                {
+                    $set:{"jobRegises.$.regisStatus":req.body.status}
+                }
+            ).exec((err,result)=>{
+                Member.findById(req.body.member_id).exec((err,result)=>{
+                    res.status(200).json({
+                        msg: "OK",
+                        postData: postResult,
+                        data: result,
+                    });
+                })
+            })
+        })
+    })
+}
 
 exports.deleteJobPost = async (req, res) => {
     JobPost.findByIdAndDelete(req.params.id)        //find product by id, then delete

@@ -15,7 +15,11 @@ app.post("/",jobPostController.addJobPost);
 // Update Post
 app.put("/:id", jobPostController.updateJobPost);
 
-// app.patch("/:id",memberController.editProduct);
+// App Applicant
+app.patch("/applicant/add/:id",jobPostController.addApplicant);
+
+// Update Status
+app.patch("/applicant/update/status/:id",jobPostController.updateRegisStatus);
 
 // Delete Post
 app.delete("/:id", jobPostController.deleteJobPost);
