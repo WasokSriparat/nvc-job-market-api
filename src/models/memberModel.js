@@ -55,8 +55,8 @@ const memberSchema = new Schema({
         title: String,
         company_id: String,
         companyName: String,
-        department: [String],
-        position: [String],
+        departments: [String],
+        positions: [String],
         description: String,
         regisStatus: {
             type:String,

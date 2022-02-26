@@ -19,8 +19,8 @@ const jobPostSchema = new Schema({
         type: String,
         required: true
     },
-    department: [String],
-    position: [String],
+    department: String,
+    position: String,
     salaryMin: Number,
     salaryMax: Number,
     ageMin: Number,
@@ -30,6 +30,10 @@ const jobPostSchema = new Schema({
         default: Date.now()
     },
     endDate: Date,
+    postStatus:{
+        type:Boolean,
+        default: true
+    },
     applicants: [{
         member_id: {
             type: String,
@@ -39,7 +43,7 @@ const jobPostSchema = new Schema({
             type: String,
             required: true
         },
-        position: {
+        positions: {
             type: [String],
             required: true
         },
@@ -65,6 +69,8 @@ const jobPostSchema = new Schema({
         }
     }]
 
+}, {
+    timestamps: true,
 });
 module.exports = mongoose.model("JobPost", jobPostSchema);
 jobPostSchema.plugin(uniqueValidator, {

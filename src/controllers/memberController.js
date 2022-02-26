@@ -22,15 +22,19 @@ exports.getMemberById = async (req,res) => {
 
 };
 
-exports.addPhoneNumber = async (req, res) => {
-    let phoneData = {
-        phoneNumber:req.body.phoneNumber
+exports.updateMember = async (req, res) => {
+    let member = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+        birthDay: req.body.birthDay,
+        description: req.body.description,
     };
-    Member.findByIdAndUpdate(req.params.id, phoneData)
+    Member.findByIdAndUpdate(req.params.id, member)       //find by id first, then update the returned document
         .exec((err, result) => {
             Member.findById(req.params.id)
                 .exec((err, result) => {
-                    // return doc ที่แก้ไขแล้วกลับไป
                     res.status(200).json({
                         msg: "OK",
                         data: result
@@ -38,63 +42,8 @@ exports.addPhoneNumber = async (req, res) => {
                 });
         });
 };
-exports.updatePhoneNumber = async (req, res) => {
-    let query = {_id: req.params.id};
-    let phoneData = {
-        $set: {
-            phoneNumber:req.body.phoneNumber
-        }
-    }
-    Member.updateOne(query,phoneData).exec((err, result) => {
-        Member.findById(req.params.id)
-            .exec((err, result) => {
-                // return doc ที่แก้ไขแล้วกลับไป
-                res.status(200).json({
-                    msg: "OK",
-                    data: result
-                });
-            });
-    });
-        
-};
 
-exports.addDescription = async (req, res) => {
-    let descriptionData = {
-        description:req.body.description
-    };
-    Member.findByIdAndUpdate(req.params.id, descriptionData)
-        .exec((err, result) => {
-            Member.findById(req.params.id)
-                .exec((err, result) => {
-                    // return doc ที่แก้ไขแล้วกลับไป
-                    res.status(200).json({
-                        msg: "OK",
-                        data: result
-                    });
-                });
-        });
-};
-exports.updateDescription = async (req, res) => {
-    let query = {_id: req.params.id};
-    let descriptionData = {
-        $set: {
-            description:req.body.description
-        }
-    }
-    Member.updateOne(query,descriptionData).exec((err, result) => {
-        Member.findById(req.params.id)
-            .exec((err, result) => {
-                // return doc ที่แก้ไขแล้วกลับไป
-                res.status(200).json({
-                    msg: "OK",
-                    data: result
-                });
-            });
-    });
-        
-};
-
-exports.addAddress = async (req, res) => {
+exports.updateAddress = async (req, res) => {
     let addressData = {
         address:
             {
@@ -117,30 +66,6 @@ exports.addAddress = async (req, res) => {
                     });
                 });
         });
-};
-exports.updateAddress = async (req, res) => {
-    let query = {_id: req.params.id};
-    let addressData = {
-        $set: {
-            "address.houseNo":req.body.houseNo,
-            "address.district":req.body.district,
-            "address.subDistrict":req.body.subDistrict,
-            "address.province":req.body.province,
-            "address.country":req.body.country,
-            "address.zipCode":req.body.zipCode,
-        }
-    }
-    Member.updateOne(query,addressData).exec((err, result) => {
-        Member.findById(req.params.id)
-            .exec((err, result) => {
-                // return doc ที่แก้ไขแล้วกลับไป
-                res.status(200).json({
-                    msg: "OK",
-                    data: result
-                });
-            });
-    });
-        
 };
 
 exports.addEducation = async (req, res) => {

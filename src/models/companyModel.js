@@ -8,9 +8,9 @@ const companySchema = new Schema({
         type: String,
         required: true,
     },
-    profilePic:{
-        data:Buffer,
-        contentType:String
+    profilePic: {
+        data: Buffer,
+        contentType: String
     },
     email: {
         type: String,
@@ -25,26 +25,26 @@ const companySchema = new Schema({
         house: String,
         tel: String
     },
-    description:String,
-    address:{
-        houseNo:String,
-        district:String,
-        subDistrict:String,
-        province:String,
-        country:String,
-        zipCode:String
+    description: String,
+    address: {
+        houseNo: String,
+        district: String,
+        subDistrict: String,
+        province: String,
+        country: String,
+        zipCode: String
     },
-    jobPostings:[{
-        jobPost_id:String,
-        title:String,
-        description:String,
-        department:[String],
-        position:[String],
-        postDate:Date
+    jobPostings: [{
+        jobPost_id: String,
+        title: String,
+        description: String,
+        departments: [String],
+        positions: [String],
+        postDate: Date
     }],
-    category:{
-        type:String,
-        default:"company"
+    category: {
+        type: String,
+        default: "company"
     }
 }, {
     timestamps: true,

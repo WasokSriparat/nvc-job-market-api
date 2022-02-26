@@ -11,13 +11,9 @@ app.get("/:id",companyController.getCompanyById);
 app.post("/register", companyController.register);
 app.post("/login", companyController.login);
 
-// phone number
-app.patch("/phone/add/:id",companyController.addPhoneNumber);
-app.patch("/phone/update/:id", companyController.updatePhoneNumber);
+// update Company
+app.put("/:id",companyController.updateCompany);
 
-// Description
-app.patch("/description/add/:id",companyController.addDescription);
-app.patch("/description/update/:id",companyController.updateDescription);
 
 // Address
 app.patch("/address/add/:id",companyController.addAddress);

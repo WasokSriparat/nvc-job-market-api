@@ -5,9 +5,9 @@ const jobPostController = require('../controllers/jobPostController')
 // Get Jop Post
 app.get("/", jobPostController.getJobPosts);
 app.get("/:id", jobPostController.getJobPostById);
-app.get("/title", jobPostController.getJobPostByTitle);
-app.get("/company/:id",jobPostController.getJobPostByCompanyId);
-app.get("/company/name",jobPostController.getJobPostByCompanyName);
+app.get("/title/:title", jobPostController.getJobPostByTitle);
+// app.get("/company/:id",jobPostController.getJobPostByCompanyId);
+// app.get("/company/name/",jobPostController.getJobPostByCompanyName);
 
 // Job Posting
 app.post("/",jobPostController.addJobPost);

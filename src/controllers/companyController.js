@@ -22,76 +22,23 @@ exports.getCompanyById = async (req,res) => {
 
 };
 
-exports.addPhoneNumber = async (req, res) => {
-    let phoneData = {
-        phoneNumber:req.body.phoneNumber
+exports.updateCompany = async (req, res) => {
+    let company = {
+        name: req.body.name,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+        description: req.body.description,
     };
-    Company.findByIdAndUpdate(req.params.id, phoneData)
+    Company.findByIdAndUpdate(req.params.id, company)       //find by id first, then update the returned document
         .exec((err, result) => {
             Company.findById(req.params.id)
                 .exec((err, result) => {
-                    // return doc ที่แก้ไขแล้วกลับไป
                     res.status(200).json({
                         msg: "OK",
                         data: result
                     });
                 });
         });
-};
-exports.updatePhoneNumber = async (req, res) => {
-    let query = {_id: req.params.id};
-    let phoneData = {
-        $set: {
-            phoneNumber:req.body.phoneNumber
-        }
-    }
-    Company.updateOne(query,phoneData).exec((err, result) => {
-        Company.findById(req.params.id)
-            .exec((err, result) => {
-                // return doc ที่แก้ไขแล้วกลับไป
-                res.status(200).json({
-                    msg: "OK",
-                    data: result
-                });
-            });
-    });
-        
-};
-
-exports.addDescription = async (req, res) => {
-    let descriptionData = {
-        description:req.body.description
-    };
-    Company.findByIdAndUpdate(req.params.id, descriptionData)
-        .exec((err, result) => {
-            Company.findById(req.params.id)
-                .exec((err, result) => {
-                    // return doc ที่แก้ไขแล้วกลับไป
-                    res.status(200).json({
-                        msg: "OK",
-                        data: result
-                    });
-                });
-        });
-};
-exports.updateDescription = async (req, res) => {
-    let query = {_id: req.params.id};
-    let descriptionData = {
-        $set: {
-            description:req.body.description
-        }
-    }
-    Company.updateOne(query,descriptionData).exec((err, result) => {
-        Company.findById(req.params.id)
-            .exec((err, result) => {
-                // return doc ที่แก้ไขแล้วกลับไป
-                res.status(200).json({
-                    msg: "OK",
-                    data: result
-                });
-            });
-    });
-        
 };
 
 exports.addAddress = async (req, res) => {

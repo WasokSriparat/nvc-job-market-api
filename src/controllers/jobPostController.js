@@ -4,7 +4,7 @@ const Member = require("../models/memberModel");
 
 exports.getJobPosts = async (req, res) => {
 
-    JobPost.find().exec((err, result) => {
+    JobPost.find().sort({createdAt:-1}).exec((err, result) => {
         res.status(200).json({
             msg: "ok",
             data: result
@@ -15,7 +15,7 @@ exports.getJobPosts = async (req, res) => {
 
 exports.getJobPostById = async (req, res) => {
 
-    getJobPosts.findById(req.params.id).exec((err, result) => {
+    JobPost.findById(req.params.id).exec((err, result) => {
         res.status(200).json({
             msg: "ok",
             data: result
@@ -25,9 +25,9 @@ exports.getJobPostById = async (req, res) => {
 };
 
 exports.getJobPostByTitle = async (req, res) => {
-    let psotTitle = req.body.title;
-    JobPost.find({      //find product by a name field, using regular expression
-        name: {
+    let psotTitle = req.params.title;
+    JobPost.find({
+        title: {
             $regex: new RegExp(psotTitle),
             $options: 'i'
         }
@@ -138,8 +138,8 @@ exports.updateJobPost = async (req, res) => {
                     let updatePostData = {
                         title: updateResult.title,
                         description: updateResult.description,
-                        department: updateResult.department,
-                        position: updateResult.position,
+                        departments: updateResult.department,
+                        positions: updateResult.position,
                     }
                     Company.updateOne(
                         {
@@ -150,8 +150,8 @@ exports.updateJobPost = async (req, res) => {
                             $set: {
                                 "jobPostings.$.title": updateResult.title,
                                 "jobPostings.$.description": updateResult.description,
-                                "jobPostings.$.department": updateResult.department,
-                                "jobPostings.$.position": updateResult.position,
+                                "jobPostings.$.departments": updateResult.department,
+                                "jobPostings.$.positions": updateResult.position,
                             }
                         }
                     ).exec((err, result) => {
@@ -173,7 +173,7 @@ exports.addApplicant = async (req,res) => {
             applicants:{
                 member_id: req.body.member_id,
                 memberName: req.body.memberName,
-                position: req.body.position,
+                positions: req.body.position,
                 description: req.body.description,
                 resume: req.body.resume
             }
@@ -190,8 +190,8 @@ exports.addApplicant = async (req,res) => {
                             title: jobPostResult.title,
                             company_id: jobPostResult.company_id,
                             companyName: jobPostResult.companyName,
-                            department: jobPostResult.department,
-                            position: jobPostResult.position,
+                            departments: jobPostResult.department,
+                            positions: jobPostResult.position,
                             description: jobPostResult.description
                         }
                     }
@@ -212,6 +212,38 @@ exports.addApplicant = async (req,res) => {
 
 }
 
+exports.updatePostStatus = async (req,res) => {
+
+    let status = Boolean;
+
+    jobPost.findById(req.params.id).exec((err,result)=>{
+        let postData = result.data;
+        if(postData.postStatus){
+            status = false;
+        }else{
+            status = true;
+        }
+
+        jobPost.updateOne(
+            {
+                _id:req.params.id
+            },
+            {
+                $set:{postStatus:status}
+            }
+        ).exec((err,result)=>{
+            JobPost.findById(req.params.id).exec((err,result)=>{
+                res.status(200).json({
+                    msg: "OK",
+                    data: result,
+                });
+            })
+        })
+        
+    })
+   
+}
+
 exports.updateRegisStatus = async (req,res) =>{
     JobPost.updateOne(
         {
@@ -225,7 +257,7 @@ exports.updateRegisStatus = async (req,res) =>{
         JobPost.findById(req.params.id).exec((err,postResult)=>{
             Member.updateOne(
                 {
-                    _id:"req.body.member_id",
+                    _id:req.body.member_id,
                     "jobRegises.jobPost_id":req.params.id
                 },
                 {
@@ -245,7 +277,7 @@ exports.updateRegisStatus = async (req,res) =>{
 }
 
 exports.deleteJobPost = async (req, res) => {
-    JobPost.findByIdAndDelete(req.params.id)        //find product by id, then delete
+    JobPost.findByIdAndDelete(req.params.id)
         .exec((err) => {
             if (err) {
                 res.status(500).json({
