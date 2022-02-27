@@ -34,14 +34,6 @@ const companySchema = new Schema({
         country: String,
         zipCode: String
     },
-    jobPostings: [{
-        jobPost_id: String,
-        title: String,
-        description: String,
-        departments: [String],
-        positions: [String],
-        postDate: Date
-    }],
     category: {
         type: String,
         default: "company"

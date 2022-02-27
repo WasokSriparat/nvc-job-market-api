@@ -43,18 +43,14 @@ const jobPostSchema = new Schema({
             type: String,
             required: true
         },
-        positions: {
-            type: [String],
-            required: true
-        },
-        description: String,
+        description:String,
         resume: {
             data: Buffer,
             contentType: String
         },
         regisStatus: {
             type:String,
-            default:"Not View"
+            default:"NotView"
         },
         message: [
             {

@@ -50,23 +50,6 @@ const memberSchema = new Schema({
         department: String,
         gpa: String
     }],
-    jobRegises: [{
-        jobPost_id: String,
-        title: String,
-        company_id: String,
-        companyName: String,
-        departments: [String],
-        positions: [String],
-        description: String,
-        regisStatus: {
-            type:String,
-            default:"Not View"
-        },
-        regisDate: {
-            type:Date,
-            default:Date.now()
-        }
-    }],
     category: {
         type: String,
         default: "member"

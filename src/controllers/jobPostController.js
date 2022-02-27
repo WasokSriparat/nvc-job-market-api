@@ -4,7 +4,7 @@ const Member = require("../models/memberModel");
 
 exports.getJobPosts = async (req, res) => {
 
-    JobPost.find().sort({createdAt:-1}).exec((err, result) => {
+    JobPost.find().sort({ createdAt: -1 }).exec((err, result) => {
         res.status(200).json({
             msg: "ok",
             data: result
@@ -31,7 +31,7 @@ exports.getJobPostByTitle = async (req, res) => {
             $regex: new RegExp(psotTitle),
             $options: 'i'
         }
-    })
+    }).sort({ createdAt: -1 })
         .exec((err, result) => {
             res.status(200).json({
                 msg: "OK",
@@ -43,7 +43,7 @@ exports.getJobPostByTitle = async (req, res) => {
 exports.getJobPostByCompanyId = async (req, res) => {
     JobPost.find({
         company_id: req.params.id
-    })
+    }).sort({ createdAt: -1 })
         .exec((err, result) => {
             res.status(200).json({
                 msg: "OK",
@@ -85,29 +85,12 @@ exports.addJobPost = async (req, res) => {
         })
 
         let createdJobPost = await jobPost.save();
-        let jobPostData = {
-            $push: {
-                jobPostings:
-                {
-                    jobPost_id: createdJobPost._id,
-                    title: createdJobPost.title,
-                    description: createdJobPost.description,
-                    department: createdJobPost.department,
-                    position: createdJobPost.position,
-                    postDate: createdJobPost.createdAt,
-                }
-            }
-        }
-        Company.findByIdAndUpdate(createdJobPost.company_id, jobPostData)
+        JobPost.find()
             .exec((err, result) => {
-                Company.findById(createdJobPost.company_id)
-                    .exec((err, result) => {
-                        res.status(200).json({
-                            msg: "Post Complete",
-                            postData: createdJobPost,
-                            data: result,
-                        });
-                    });
+                res.status(200).json({
+                    msg: "Post Complete",
+                    data: result,
+                });
             });
 
     } catch (error) {
@@ -133,138 +116,93 @@ exports.updateJobPost = async (req, res) => {
     }
     JobPost.findByIdAndUpdate(req.params.id, jobPost)       //find by id first, then update the returned document
         .exec((err, result) => {
-            JobPost.findById(req.params.id)
-                .exec((err, updateResult) => {
-                    let updatePostData = {
-                        title: updateResult.title,
-                        description: updateResult.description,
-                        departments: updateResult.department,
-                        positions: updateResult.position,
-                    }
-                    Company.updateOne(
-                        {
-                            _id: updateResult.company_id,
-                            "jobPostings.jobPost_id": req.params.id
-                        },
-                        {
-                            $set: {
-                                "jobPostings.$.title": updateResult.title,
-                                "jobPostings.$.description": updateResult.description,
-                                "jobPostings.$.departments": updateResult.department,
-                                "jobPostings.$.positions": updateResult.position,
-                            }
-                        }
-                    ).exec((err, result) => {
-                        Company.findById(updateResult.company_id).exec((err, result) => {
-                            res.status(200).json({
-                                msg: "OK",
-                                postData: updateResult,
-                                data: result,
-                            });
-                        })
-                    })
+            JobPost.find()
+                .exec((err, result) => {
+                    res.status(200).json({
+                        msg: "Post Complete",
+                        data: result,
+                    });
                 });
         });
 };
 
-exports.addApplicant = async (req,res) => {
+exports.addApplicant = async (req, res) => {
     let applicantData = {
-        $push:{
-            applicants:{
+        $push: {
+            applicants: {
                 member_id: req.body.member_id,
                 memberName: req.body.memberName,
-                positions: req.body.position,
                 description: req.body.description,
                 resume: req.body.resume
             }
         }
     }
-    JobPost.findByIdAndUpdate(req.params.id,applicantData)
-        .exec((err,result)=>{
+    JobPost.findByIdAndUpdate(req.params.id, applicantData)
+        .exec((err, result) => {
             JobPost.findById(req.params.id)
-            .exec((err,jobPostResult)=>{
-                let postRegisData = {
-                    $push:{
-                        jobRegises:{
-                            jobPost_id: req.params.id,
-                            title: jobPostResult.title,
-                            company_id: jobPostResult.company_id,
-                            companyName: jobPostResult.companyName,
-                            departments: jobPostResult.department,
-                            positions: jobPostResult.position,
-                            description: jobPostResult.description
-                        }
-                    }
-                }
-                Member.findByIdAndUpdate(req.body.member_id,postRegisData)
-                    .exec((err,result)=>{
-                        Member.findById(req.body.member_id)
-                        .exec((err,result)=>{
-                            res.status(200).json({
-                                msg: "OK",
-                                postData: jobPostResult,
-                                data: result,
-                            });
-                        })
-                    })
-            })
+            .exec((err, result) => {
+                res.status(200).json({
+                    msg: "Post Complete",
+                    data: result,
+                });
+            });
         })
 
 }
 
-exports.updatePostStatus = async (req,res) => {
+exports.updatePostStatus = async (req, res) => {
 
     let status = Boolean;
 
-    jobPost.findById(req.params.id).exec((err,result)=>{
-        let postData = result.data;
-        if(postData.postStatus){
+    JobPost.findById(req.params.id).exec((err, result) => {
+        let postData = result;
+        if (postData.postStatus) {
             status = false;
-        }else{
+        } else {
             status = true;
         }
 
-        jobPost.updateOne(
+        JobPost.updateOne(
             {
-                _id:req.params.id
+                _id: req.params.id
             },
             {
-                $set:{postStatus:status}
+                $set: { postStatus: status }
             }
-        ).exec((err,result)=>{
-            JobPost.findById(req.params.id).exec((err,result)=>{
+        ).exec((err, result) => {
+            JobPost.findById(req.params.id).exec((err, result) => {
                 res.status(200).json({
                     msg: "OK",
                     data: result,
                 });
             })
         })
-        
+
     })
-   
+
 }
 
-exports.updateRegisStatus = async (req,res) =>{
+exports.updateRegisStatus = async (req, res) => {
     JobPost.updateOne(
         {
-            _id:req.params.id,
-            "applicants._id":req.body.applicant_id
+            _id: req.params.id,
+            "applicants._id": req.body.applicant_id
         },
         {
-            $set:{"applicants.$.regisStatus":req.body.status}
+            $set: { "applicants.$.regisStatus": req.body.status }
         }
-    ).exec((err,result)=>{
-        JobPost.findById(req.params.id).exec((err,postResult)=>{
+    ).exec((err, result) => {
+        JobPost.findById(req.params.id).exec((err, postResult) => {
             Member.updateOne(
                 {
-                    _id:req.body.member_id,
-                    "jobRegises.jobPost_id":req.params.id
+                    _id: req.body.member_id,
+                    "jobRegises.jobPost_id": req.params.id
                 },
                 {
-                    $set:{"jobRegises.$.regisStatus":req.body.status}
+                    $set: { "jobRegises.$.regisStatus": req.body.status }
                 }
-            ).exec((err,result)=>{
-                Member.findById(req.body.member_id).exec((err,result)=>{
+            ).exec((err, result) => {
+                Member.findById(req.body.member_id).exec((err, result) => {
                     res.status(200).json({
                         msg: "OK",
                         postData: postResult,
