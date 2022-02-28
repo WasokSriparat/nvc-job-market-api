@@ -140,12 +140,12 @@ exports.addApplicant = async (req, res) => {
     JobPost.findByIdAndUpdate(req.params.id, applicantData)
         .exec((err, result) => {
             JobPost.findById(req.params.id)
-            .exec((err, result) => {
-                res.status(200).json({
-                    msg: "Post Complete",
-                    data: result,
+                .exec((err, result) => {
+                    res.status(200).json({
+                        msg: "Apply Complete",
+                        data: result,
+                    });
                 });
-            });
         })
 
 }
