@@ -52,20 +52,23 @@ exports.getJobPostByCompanyId = async (req, res) => {
         });
 };
 
-exports.getJobPostByCompanyName = async (req, res) => {
-    JobPost.find({
-        companyName: {
-            $regex: new RegExp(req.body.companyName),
-            $options: 'i'
+exports.getJobPostByMemberId = async (req, res) => {
+    JobPost.find(
+        {
+            applicants:{
+                $elemMatch:{
+                    member_id:req.params.id
+                }
+            }
         }
-    })
-        .exec((err, result) => {
+    ).sort({ "applicants.regisDate" : -1 }).exec((err, result) => {
             res.status(200).json({
                 msg: "OK",
                 data: result
             });
         });
 };
+
 
 exports.addJobPost = async (req, res) => {
     try {
@@ -119,7 +122,7 @@ exports.updateJobPost = async (req, res) => {
             JobPost.find()
                 .exec((err, result) => {
                     res.status(200).json({
-                        msg: "Post Complete",
+                        msg: "OK",
                         data: result,
                     });
                 });
@@ -193,26 +196,35 @@ exports.updateRegisStatus = async (req, res) => {
         }
     ).exec((err, result) => {
         JobPost.findById(req.params.id).exec((err, postResult) => {
-            Member.updateOne(
-                {
-                    _id: req.body.member_id,
-                    "jobRegises.jobPost_id": req.params.id
-                },
-                {
-                    $set: { "jobRegises.$.regisStatus": req.body.status }
-                }
-            ).exec((err, result) => {
-                Member.findById(req.body.member_id).exec((err, result) => {
-                    res.status(200).json({
-                        msg: "OK",
-                        postData: postResult,
-                        data: result,
-                    });
-                })
-            })
+            res.status(200).json({
+                msg: "OK",
+                data: result,
+            });
         })
     })
 }
+
+exports.deleteApplicant = async (req, res) => {
+    JobPost.updateOne(
+        {
+            _id: req.params.id
+        },{
+            $pull: {
+                applicants: { _id : req.body.applicant_id }
+            }
+        }
+    ).exec((err, result) => {
+        JobPost.findById(req.params.id)
+            .exec((err, result) => {
+                // return doc ที่แก้ไขแล้วกลับไป
+                res.status(200).json({
+                    msg: "OK",
+                    data: result
+                });
+            });
+    });
+        
+};
 
 exports.deleteJobPost = async (req, res) => {
     JobPost.findByIdAndDelete(req.params.id)

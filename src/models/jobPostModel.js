@@ -52,6 +52,10 @@ const jobPostSchema = new Schema({
             type:String,
             default:"NotView"
         },
+        regisDate:{
+            type:String,
+            default: Date.now()
+        },
         message: [
             {
                 messenger_id: String,
