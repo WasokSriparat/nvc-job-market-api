@@ -44,10 +44,6 @@ const jobPostSchema = new Schema({
             required: true
         },
         description:String,
-        resume: {
-            data: Buffer,
-            contentType: String
-        },
         regisStatus: {
             type:String,
             default:"NotView"
@@ -56,13 +52,6 @@ const jobPostSchema = new Schema({
             type:String,
             default: Date.now()
         },
-        message: [
-            {
-                messenger_id: String,
-                name: String,
-                content: String
-            }
-        ],
         applicantDate: {
             type: Date,
             default: Date.now()

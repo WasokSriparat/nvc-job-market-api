@@ -15,6 +15,9 @@ app.post("/login", memberController.login);
 // update member
 app.put("/:id",auth,memberController.updateMember);
 
+//update pic
+app.patch("/profile/update/:id",memberController.updatePic);
+
 // Address
 app.patch("/address/update/:id",auth,memberController.updateAddress);
 

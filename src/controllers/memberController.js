@@ -43,6 +43,28 @@ exports.updateMember = async (req, res) => {
         });
 };
 
+exports.updatePic = async (req, res) => {
+    let query = {
+        _id: req.params.id
+    }
+    let pic = {
+        $set: {
+            profilePic:req.body.pic,
+        }
+    }
+    Member.updateOne(query,pic).exec((err, result) => {
+        Member.findById(req.params.id)
+            .exec((err, result) => {
+                // return doc ที่แก้ไขแล้วกลับไป
+                res.status(200).json({
+                    msg: "OK",
+                    data: result
+                });
+            });
+    });
+        
+};
+
 exports.updateAddress = async (req, res) => {
     let addressData = {
         address:

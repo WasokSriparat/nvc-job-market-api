@@ -41,30 +41,28 @@ exports.updateCompany = async (req, res) => {
         });
 };
 
-exports.addAddress = async (req, res) => {
-    let addressData = {
-        address:
-            {
-                houseNo:req.body.houseNo,
-                district:req.body.district,
-                subDistrict:req.body.subDistrict,
-                province:req.body.province,
-                country:req.body.country,
-                zipCode:req.body.zipCode
-            }
-    };
-    Company.findByIdAndUpdate(req.params.id, addressData)
-        .exec((err, result) => {
-            Company.findById(req.params.id)
-                .exec((err, result) => {
-                    // return doc ที่แก้ไขแล้วกลับไป
-                    res.status(200).json({
-                        msg: "OK",
-                        data: result
-                    });
+exports.updatePic = async (req, res) => {
+    let query = {
+        _id: req.params.id
+    }
+    let pic = {
+        $set: {
+            profilePic:req.body.pic,
+        }
+    }
+    Company.updateOne(query,pic).exec((err, result) => {
+        Company.findById(req.params.id)
+            .exec((err, result) => {
+                // return doc ที่แก้ไขแล้วกลับไป
+                res.status(200).json({
+                    msg: "OK",
+                    data: result
                 });
-        });
+            });
+    });
+        
 };
+
 exports.updateAddress = async (req, res) => {
     let query = {_id: req.params.id};
     let addressData = {

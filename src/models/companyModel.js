@@ -9,8 +9,8 @@ const companySchema = new Schema({
         required: true,
     },
     profilePic: {
-        data: Buffer,
-        contentType: String
+        type: String,
+        default: ""
     },
     email: {
         type: String,
