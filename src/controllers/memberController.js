@@ -115,29 +115,6 @@ exports.addEducation = async (req, res) => {
         });
 };
 
-exports.updateEducation = async (req, res) => {
-    let query = {_id: req.params.id, "educations._id":req.body._id };
-    let educationData = {
-        $set: {
-            "educations.$.academy":req.body.academy,
-            "educations.$.qualification":req.body.qualification,
-            "educations.$.department":req.body.department,
-            "educations.$.gpa":req.body.gpa
-        }
-    }
-    Member.updateOne(query,educationData).exec((err, result) => {
-        Member.findById(req.params.id)
-            .exec((err, result) => {
-                // return doc ที่แก้ไขแล้วกลับไป
-                res.status(200).json({
-                    msg: "OK",
-                    data: result
-                });
-            });
-    });
-        
-};
-
 exports.deleteEducation = async (req, res) => {
     Member.updateOne(
         {

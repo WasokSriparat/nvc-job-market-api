@@ -16,14 +16,13 @@ app.post("/login", memberController.login);
 app.put("/:id",auth,memberController.updateMember);
 
 //update pic
-app.patch("/profile/update/:id",memberController.updatePic);
+app.patch("/profile/update/:id",auth,memberController.updatePic);
 
 // Address
 app.patch("/address/update/:id",auth,memberController.updateAddress);
 
 // Education
 app.patch("/education/add/:id",auth,memberController.addEducation);
-// app.patch("/education/update/:id", memberController.updateEducation);
 app.patch("/education/delete/:id",auth,memberController.deleteEducation);
 
 app.delete("/:id",auth, memberController.deleteMember);

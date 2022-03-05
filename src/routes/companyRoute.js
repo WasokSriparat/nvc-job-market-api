@@ -16,7 +16,7 @@ app.post("/login", companyController.login);
 app.put("/:id",auth,companyController.updateCompany);
 
 // update profile picture
-app.patch("/profile/update/:id",companyController.updatePic);
+app.patch("/profile/update/:id",auth,companyController.updatePic);
 
 // Address
 app.patch("/address/update/:id",auth, companyController.updateAddress);

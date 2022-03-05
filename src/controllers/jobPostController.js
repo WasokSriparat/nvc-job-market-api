@@ -135,8 +135,7 @@ exports.addApplicant = async (req, res) => {
             applicants: {
                 member_id: req.body.member_id,
                 memberName: req.body.memberName,
-                description: req.body.description,
-                resume: req.body.resume
+                description: req.body.description
             }
         }
     }
@@ -195,7 +194,7 @@ exports.updateRegisStatus = async (req, res) => {
             $set: { "applicants.$.regisStatus": req.body.status }
         }
     ).exec((err, result) => {
-        JobPost.findById(req.params.id).exec((err, postResult) => {
+        JobPost.findById(req.params.id).exec((err, result) => {
             res.status(200).json({
                 msg: "OK",
                 data: result,
